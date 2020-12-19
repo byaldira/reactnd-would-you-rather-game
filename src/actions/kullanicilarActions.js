@@ -20,7 +20,7 @@ export function answerToQuestion(soruId , cevap , authedUser)
     }
 }
 
-export function addQuestion(soru) {
+export function addQuestionToUser(soru) {
     return {
         type: ADD_QUESTION,
         soru
