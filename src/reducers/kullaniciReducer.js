@@ -29,6 +29,6 @@ export default function kullanicilar(state = {} , action) {
                 }
               }
         default:
-            break;
+          return state
     }
 }

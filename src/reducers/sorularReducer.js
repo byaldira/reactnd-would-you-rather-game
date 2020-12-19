@@ -26,6 +26,6 @@ export default function sorular(state ={} , action) {
                 ...action.sorular
             }
         default:
-            break;
+            return state
     }
 }
