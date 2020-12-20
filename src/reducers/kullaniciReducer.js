@@ -1,13 +1,12 @@
-import { act } from 'react-dom/test-utils';
 import { GET_ALL_USERS , ANSWER_TO_QUESTION , ADD_QUESTION} from '../actions/kullanicilarActions'
 
 
-export default function kullanicilar(state = {} , action) {
-    switch (action) {
+export default function users(state = {} , action) {
+    switch (action.type) {
         case GET_ALL_USERS:
             return {
                 ...state,
-                ...action.kullanicilar
+                ...action.users
             }
         case ANSWER_TO_QUESTION:
             return {

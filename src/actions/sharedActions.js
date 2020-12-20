@@ -1,7 +1,7 @@
 
 import { showLoading , hideLoading } from 'react-redux-loading'
 import { getAllKullanicilar } from './kullanicilarActions'
-import { getAllSorular } from './sorularActions'
+import { getQuestions } from './sorularActions'
 import { getInitialAppData} from '../utils/api'
 
 export function handleAppInitialData()
@@ -11,14 +11,16 @@ export function handleAppInitialData()
     return (dispatch) => {
         dispatch(showLoading())
         return getInitialAppData()
-        .then(({users , sorular})=>{
+            .then(({users , questions})=>{
                     // Get all data artık elimde kullanıcılar ve cevaplari var, burada store'a at 
                     dispatch(getAllKullanicilar(users)) // Bu kullanicilari alır
-                    //dispatch(getAllSorular(sorular)) // soruları alır 
+                    dispatch(getQuestions(questions)) // soruları alır 
+                   
                     // Kaldı geriye cevapsız sorular :) 
 
                     // when finished hide loding panel
                     dispatch(hideLoading())
-               })
+            })
+            .catch(error => console.log(error) )
     }
 }

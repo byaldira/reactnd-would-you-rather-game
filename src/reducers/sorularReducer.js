@@ -2,8 +2,8 @@ import { Switch } from "react-router-dom";
 import {ADD_QUESTION , ADD_ANSWER, GET_QUESTIONS} from '../actions/sorularActions'
 
 
-export default function sorular(state ={} , action) {
-    switch (action) {
+export default function questions(state ={} , action) {
+    switch (action.type) {
         case ADD_QUESTION:
             return {
                 ...state,
@@ -23,7 +23,7 @@ export default function sorular(state ={} , action) {
         case GET_QUESTIONS:
             return {
                 ...state,
-                ...action.sorular
+                ...action.questions
             }
         default:
             return state
