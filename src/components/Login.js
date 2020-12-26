@@ -1,55 +1,105 @@
-import { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Home from './Home';
+import { setAuthedUser } from '../actions/authedUser';
 import Select from 'react-select';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+
 const imageUserLabel=({ name, avatarURL }) => (
-    <div className='login-single-user'>
-        <img src={avatarURL} alt={name} className='login-img-user' />
+    <div className=''>
+        <img src={avatarURL} alt={name} className='w3-circle' height="40" />
       {name}
     </div>
   );
 class Login extends Component{
-
-    render(){
-        // const { user,goToHome} = this.state;
-        // const { users,authedUser} = this.props;
-        
-        return (
-            
-            <div className="w3-row w3-cursive">
-                {/* <div class="w3-col m2 l3">
-                    <p></p>
-                </div>
-                <div className="w3-col m2 l6 w3-center ">
-                    <h2 className="w3-cursive"> Would You Rather ?</h2>
-                    <form className="w3-container w3-card-4">
-                    <Select
-                        onChange={this.handleOnChange} 
-                        formatOptionLabel={imageUserLabel}
-                        options={users} 
-                        getOptionLabel={(option)=>option.id}
-                        getOptionValue={(option)=>option.name}
-                        placeholder='Select User'
-                        isSearchable={false}
-                        />
-                    <button className="w3-button w3-section w3-teal w3-ripple"> Log in </button>
-
-                    </form>
-                </div>
-                <div className="w3-col m2 l3">
-                    <p></p>
-                </div>  */}
-            </div>
-        )
+    state={
+        user: '',
+        goToHome:false
+    };
+    handleOnChange=(value)=>{
+        this.setState({
+            user:value.id,
+        })
     }
+    handleFormSubmit = (e) => {
+        const {user}= this.state;
+		const { dispatch, id } = this.props;
 
+		e.preventDefault();
+
+		if (user !== '') {
+            dispatch(setAuthedUser(user));
+            this.setState({
+                user: '',
+                  goToHome: id === null
+                          ? true
+                          : false,
+            });
+		}
+
+        if (id !== null) {
+        	this.props.history.push(`/questions/${id}`)
+        }
+	};
+render()
+{
+        const { user,goToHome} = this.state;
+        const { users,authedUser} = this.props;
+        
+        if (goToHome || !!authedUser) {
+        	return <Home />
+        }
+        
+		return (
+			<div>
+                <div className="w3-container w3-margin-top  w3-cursive">
+                <div className='login-list-group font-size w3-center'>
+                    <h1>Welcome to the Would You Rather App!</h1>
+                    <h3>Log in </h3><br/>
+
+                </div>
+                <div className="w3-row">
+                    <div className="w3-third w3-center">
+                        <br/>
+                    </div>
+                    <div className='w3-third'>
+                    <Select
+                            onChange={this.handleOnChange} 
+                            formatOptionLabel={imageUserLabel}
+                            getOptionLabel={(option)=>option.id}
+                            getOptionValue={(option)=>option.name}
+                            options={users} 
+                            placeholder='Please Select a User to login'
+                            isSearchable={false}
+                    />
+                  <br/> <br/>
+                  <button color="success" 
+                        className="w3-button w3-btn w3-green w3-block"
+                        type='submit'
+                        disabled={user === ''}
+                        onClick={this.handleFormSubmit}>
+                        Sign In
+                 </button>
+                </div>
+                    <div className="w3-third w3-center">
+                     <br/>
+                    </div>
+                </div>
+               
+               
+            </div>
+            </div>
+		);
+    
 }
-
+}
 function mapStateToProps ({ users,authedUser}, {id}) {
-	// return {
-    //     authedUser,
-    // 	users: Object.values(users),
-    //   	id: id ? id : null
-	// }
+    // get id 
+	return {
+        authedUser,
+    	users: Object.values(users),
+      	id: id ? id : null
+	}
 }
+
 export default withRouter(connect(mapStateToProps)(Login));
